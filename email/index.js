@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const mailRoute = require('./src/Routes/v1/mail')
 const dotenv = require('dotenv');
-
-app.use(express.json());
 dotenv.config();
+app.use(express.json());
+
 
 
 app.get("/ping", (req, res) => {

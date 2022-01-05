@@ -1,14 +1,13 @@
 const nodeMailer = require('nodemailer')
 const { google } = require('googleapis')
+const dotenv = require('dotenv');
+dotenv.config();
 
-const CLIENT_ID = "1079049625310-r4gr43gej57igrv6v489qbqon5vcp981.apps.googleusercontent.com"
-const CLIENT_SECRET = "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"
-const REDIRECT_URI = "https://developers.google.com/oauthplayground"
-const REFRESH_TOKEN = "1//043n9Puk54o-CCgYIARAAGAQSNwF-L9IrgBt_a6LgZcsMLh-LZwH6uRGLv_yXJg5m-9XXkC0nOa72VZ595vGuCV_yHTAPk313LcA"
 
-const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
+try {
+  const oAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.REDIRECT_URI)
 
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN })
+oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN })
 const accessToken = oAuth2Client.getAccessToken()
 
 
@@ -16,17 +15,21 @@ var transporter = nodeMailer.createTransport({
     service: 'gmail',
     auth: {
         type: 'OAuth2',
-        user: "sociallyblore@gmail.com",
+        user: process.env.MAIL,
         pass: process.env.PASSWORD, 
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        refreshToken: process.env.REFRESH_TOKEN,
         accessToken: accessToken
     },
     tls: {
         rejectUnauthorized: false
     }
 })
+} catch (error) {
+  console.log(error)
+}
+
 module.exports.sendEmail = async (req, res, next) => {
 var mailOptions ={
     from : ' "Socially" <sociallyblore@gmail.com> ',
