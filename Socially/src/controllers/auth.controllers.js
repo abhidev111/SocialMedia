@@ -4,10 +4,6 @@ const crypto = require('crypto')
 
 
 
-
-
-
-
 module.exports.register = async (req, res, next) => {
   try {
     const salt = await bcrypt.genSalt(10);
@@ -97,7 +93,7 @@ module.exports.resetPassword = async (req, res) => {
     }
     else
       res.send("Couldn't reset the password")
-      
+
   } catch (err) {
     console.log(err)
   }

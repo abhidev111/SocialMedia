@@ -1,13 +1,5 @@
 const router = require('express').Router();
-const User = require('../models/user.model');
 const authController = require('../../src/controllers/auth.controllers')
-const bcrypt = require('bcrypt')
-
-
-
-
-
-
 
 
 

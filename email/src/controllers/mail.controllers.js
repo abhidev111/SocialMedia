@@ -49,32 +49,24 @@ module.exports.sendVerifyEmail = async (req, res, next) => {
   })
 }
 
-  module.exports.sendPasswordResetEmail = async (req, res, next) => {
-    var mailOptions = {
-      from: ' "Socially" <sociallyblore@gmail.com> ',
-      to: req.body.email,
-      subject: 'Socially -Reset your password',
-      html: `<h3> Hi ${req.body.fullName}, You have requested for resetting the password. </h3> <p>Please click below link to reset password</hp> <a href="http://localhost:3000/auth/reset-password?token=${req.body.emailToken}">Reset password</a>`
-    }
-
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log(err)
-      }
-      else {
-        console.log(info)
-        res.status(200).send("mail sent sucessfully")
-      }
-    })
+module.exports.sendPasswordResetEmail = async (req, res, next) => {
+  var mailOptions = {
+    from: ' "Socially" <sociallyblore@gmail.com> ',
+    to: req.body.email,
+    subject: 'Socially -Reset your password',
+    html: `<h3> Hi ${req.body.fullName}, You have requested for resetting the password. </h3> <p>Please click below link to reset password</hp> <a href="http://localhost:3000/auth/reset-password?token=${req.body.emailToken}">Reset password</a>`
   }
 
-  // transporter.sendMail(mailOptions, (err, info) => {
-  //   if (err) {
-  //     console.log(err)
-  //   }
-  //   else {
-  //     console.log(info)
-  //     res.status(200).send("mail sent sucessfully")
-  //   }
-  // })
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.log(err)
+    }
+    else {
+      console.log(info)
+      res.status(200).send("mail sent sucessfully")
+    }
+  })
+}
+
+
 
