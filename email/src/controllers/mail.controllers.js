@@ -41,6 +41,7 @@ module.exports.sendVerifyEmail = async (req, res, next) => {
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
       console.log(err)
+      res.send({"status":false,"message":"couldn't send the mail"})
     }
     else {
       console.log(info)
@@ -60,6 +61,7 @@ module.exports.sendPasswordResetEmail = async (req, res, next) => {
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
       console.log(err)
+      res.send({"status":false,"message":"couldn't send the mail"})
     }
     else {
       console.log(info)
