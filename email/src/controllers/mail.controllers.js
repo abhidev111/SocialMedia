@@ -44,7 +44,7 @@ module.exports.sendVerifyEmail = async (req, res, next) => {
     }
     else {
       console.log(info)
-      res.status(200).send("mail sent sucessfully")
+      res.status(200).send({"status":true,"message":"mail sent sucessfully"})
     }
   })
 }
@@ -63,7 +63,7 @@ module.exports.sendPasswordResetEmail = async (req, res, next) => {
     }
     else {
       console.log(info)
-      res.status(200).send("mail sent sucessfully")
+      res.status(200).send({"status":true,"message":"mail sent sucessfully"})
     }
   })
 }
