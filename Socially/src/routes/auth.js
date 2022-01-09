@@ -9,6 +9,6 @@ router.post("/login", authController.login)
 
 router.get("/verify-email",authController.verifyEmail)
 
-router.post("/reset-password",authController.resetPassword)
+router.put("/reset-password",authController.resetPassword)
 
 module.exports = router;

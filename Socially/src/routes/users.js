@@ -11,9 +11,10 @@ console.log("hello")
 router.get('/userProfile', jwtHelper.verifyJwtToken, userController.userProfile);
 
 //update user 
-router.put("/:id", async (req, res) => {
+router.put("/updateProfile/:id",jwtHelper.verifyJwtToken, userController.updateProfile);
 
-})
+//delete a user
+router.delete("/deleteProfile/:id",jwtHelper.verifyJwtToken, userController.deleteProfile)
 
 router.get("/users/:id", (req, res) => {
     res.send("router info");
