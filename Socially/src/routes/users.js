@@ -16,13 +16,11 @@ router.put("/updateProfile/:id",jwtHelper.verifyJwtToken, userController.updateP
 //delete a user
 router.delete("/deleteProfile/:id",jwtHelper.verifyJwtToken, userController.deleteProfile)
 
-router.get("/users/:id", (req, res) => {
-    res.send("router info");
-})
+//view other user
+router.get("/viewothersProfile/:id",userController.viewOtherAcc )
 
-router.put("/users/:id", (req, res) => {
-    res.send("router info");
-})
+//follow a user
+router.put("/follow",jwtHelper.verifyJwtToken, userController.addFollowers )
 
 
 
