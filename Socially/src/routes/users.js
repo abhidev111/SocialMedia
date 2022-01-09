@@ -11,17 +11,18 @@ console.log("hello")
 router.get('/userProfile', jwtHelper.verifyJwtToken, userController.userProfile);
 
 //update user 
-router.put("/updateProfile/:id",jwtHelper.verifyJwtToken, userController.updateProfile);
+router.put("/updateProfile/:id", jwtHelper.verifyJwtToken, userController.updateProfile);
 
 //delete a user
-router.delete("/deleteProfile/:id",jwtHelper.verifyJwtToken, userController.deleteProfile)
+router.delete("/deleteProfile/:id", jwtHelper.verifyJwtToken, userController.deleteProfile)
 
 //view other user
-router.get("/viewothersProfile/:id",userController.viewOtherAcc )
+router.get("/viewothersProfile/:id", userController.viewOtherAcc)
 
 //follow a user
-router.put("/follow",jwtHelper.verifyJwtToken, userController.addFollowers )
+router.put("/follow", jwtHelper.verifyJwtToken, userController.addFollowers)
 
-
+//unfollow a user
+router.put("/unfollow", jwtHelper.verifyJwtToken, userController.removeFollowers)
 
 module.exports = router;

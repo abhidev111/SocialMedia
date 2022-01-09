@@ -89,6 +89,29 @@ module.exports.addFollowers = async (req, res) => {
         }
     }
     else {
-        res.status(403).send("u can't follow urself")
+        res.status(403).send("u can't follow urself :(")
+    }
+}
+
+module.exports.removeFollowers = async (req, res) => {
+    if (req._id !== req.body.id) {
+        try {
+            const userToUnFollow = await User.findById(req.body.id);
+            const currentUser = await User.findById({ _id: req._id })
+            if (currentUser.following.includes(req.body.id)) {
+                await userToUnFollow.updateOne({ $pull: { followers: req._id } })
+                await currentUser.updateOne({ $pull: { following: req.body.id } })
+                res.status(200).json("Unfollowes successfully")
+            }
+            else {
+                res.status(403).json("You are not followin this person")
+            }
+        } catch (error) {
+            res.status(500).json(error)
+            console.log(error)
+        }
+    }
+    else {
+        res.status(403).send("u can't unfollow urself :(")
     }
 }
