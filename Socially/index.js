@@ -4,9 +4,18 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const upload = require('express-fileupload')
+const bodyParser =require('body-parser');
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     
+  extended: true
+}));
+
+app.use(upload());
 
 const usersRoute = require('./src/routes/users');
-const authRoute = require('./src/routes/auth')
+const authRoute = require('./src/routes/auth');
+const postRoute = require('./src/routes/post');
 
 dotenv.config();
 //middlewares
@@ -22,6 +31,7 @@ app.get("/ping", (req, res) => {
 
 app.use("/auth", authRoute)
 app.use("/users", usersRoute)
+app.use("/post",postRoute)
 
 app.use((err, req, res, next) => {
         var valErrors = [];

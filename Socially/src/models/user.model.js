@@ -61,8 +61,9 @@ userSchema.path('email').validate((val) => {
 
 userSchema.methods.generateJwt = function () {
     return jwt.sign({ _id: this._id },
-        process.env.SECRET_KEY,                   
-        { expiresIn: '20m' });          // jwt token expires in 20 min
+        process.env.SECRET_KEY
+        // ,{ expiresIn: '60m' }
+        );          // jwt token expires in 20 min
 }
 
 module.exports = mongoose.model('User', userSchema);
