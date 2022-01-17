@@ -1,12 +1,14 @@
 const router = require('express').Router();
-const jwtHelper = require('../config/jwtHelper');
+const jwtHelper = require('../middlewares/jwtHelper');
 const postController = require('../controllers/post.controllers')
 
-router.post("/createPost",jwtHelper.verifyJwtToken,postController.createPost);
 
-router.put("/updatePost",jwtHelper.verifyJwtToken,postController.updatePost);
 
-router.delete("/deletePost",jwtHelper.verifyJwtToken,postController.deletePost);
+router.post("/createPost",jwtHelper.verifyJwtToken ,postController.createPost);
+
+// router.put("/updatePost",jwtHelper.verifyJwtToken,postController.updatePost);
+
+router.delete("/deletePost/:postId",jwtHelper.verifyJwtToken,postController.deletePost);
 
 router.post("/likePost",jwtHelper.verifyJwtToken,postController.likePost);
 

@@ -31,7 +31,9 @@ app.get("/ping", (req, res) => {
 
 app.use("/auth", authRoute)
 app.use("/users", usersRoute)
-app.use("/post",postRoute)
+app.use("/posts",postRoute)
+
+
 
 app.use((err, req, res, next) => {
         var valErrors = [];

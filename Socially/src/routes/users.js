@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/user.model');
-const jwtHelper = require('../config/jwtHelper');
+const jwtHelper = require('../middlewares/jwtHelper');
 const userController = require('../../src/controllers/user.controllers')
 const _ = require('lodash');
 
