@@ -25,4 +25,6 @@ router.put("/follow", jwtHelper.verifyJwtToken, userController.addFollowers)
 //unfollow a user
 router.put("/unfollow", jwtHelper.verifyJwtToken, userController.removeFollowers)
 
+//friend suggestion will be implemented later ..still seaching a better method for it.
+
 module.exports = router;
