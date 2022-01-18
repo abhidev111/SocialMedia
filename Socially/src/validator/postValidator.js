@@ -23,6 +23,13 @@ exports.validatePost = [
     .isEmpty()
     .withMessage('Image URL not provided')
     .bail(),
+
+    check('imgPath')
+    .trim()
+    .not()
+    .isEmpty()
+    .withMessage('Image Path not provided')
+    .bail(),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())

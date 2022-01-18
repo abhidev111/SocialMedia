@@ -11,20 +11,24 @@ var postSchema = new mongoose.Schema({
         max: 500,
         default: ""
     },
+    imgPath: {
+        type: String //req for deletion
+    }
+    ,
     imgURL: {
-        type: String
+        type: String //publicly accessible link
     },
     likes: {
         type: Array,
         default: []
     },
-    commentsArray : [
+    commentsArray: [
         {
-            commenter_id: String, 
+            commenter_id: String,
             comment: String
         }
     ]
-    
+
 
 }, { timestamps: true }
 )
