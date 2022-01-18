@@ -36,11 +36,19 @@ var userSchema = new mongoose.Schema({
         type: String,
         default: ""   //here we will store the links of profile photo which are stored in amazon s3 or some remote storage
     },
-    followers: {
+    followersRequest: {
+        type: Array,
+        default: []
+    },
+    acceptedfollowers: {
         type: Array,
         default: []
     },
     following: {
+        type: Array,
+        default: []
+    },
+    blockList: {
         type: Array,
         default: []
     },

@@ -4,17 +4,21 @@ const postController = require('../controllers/post.controllers')
 
 
 
-router.post("/createPost",jwtHelper.verifyJwtToken ,postController.createPost);
+router.post("/createPost", jwtHelper.verifyJwtToken, postController.createPost);
 
 // router.put("/updatePost",jwtHelper.verifyJwtToken,postController.updatePost);
 
-router.delete("/deletePost/:postId",jwtHelper.verifyJwtToken,postController.deletePost);
+router.delete("/deletePost/:postId", jwtHelper.verifyJwtToken, postController.deletePost);
 
-router.post("/likePost",jwtHelper.verifyJwtToken,postController.likePost);
+router.post("/likePost", jwtHelper.verifyJwtToken, postController.likePost);
 
-router.get("/getPost",jwtHelper.verifyJwtToken,postController.getPost);
+router.post("/addComment", jwtHelper.verifyJwtToken, postController.addComment);
 
-router.get("/getAllPost",jwtHelper.verifyJwtToken,postController.getAllPost);
+router.put("/updateComment", jwtHelper.verifyJwtToken, postController.updateComment);
+
+router.get("/getPost", jwtHelper.verifyJwtToken, postController.getPost);
+
+router.get("/getAllPost", jwtHelper.verifyJwtToken, postController.getAllPost);
 
 
 module.exports = router;

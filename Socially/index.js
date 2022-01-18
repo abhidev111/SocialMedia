@@ -4,14 +4,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const upload = require('express-fileupload')
-const bodyParser =require('body-parser');
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     
-  extended: true
-}));
 
-app.use(upload());
+
 
 const usersRoute = require('./src/routes/users');
 const authRoute = require('./src/routes/auth');

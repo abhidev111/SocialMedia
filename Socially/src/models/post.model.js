@@ -17,7 +17,14 @@ var postSchema = new mongoose.Schema({
     likes: {
         type: Array,
         default: []
-    }
+    },
+    commentsArray : [
+        {
+            commenter_id: String, 
+            comment: String
+        }
+    ]
+    
 
 }, { timestamps: true }
 )

@@ -20,11 +20,23 @@ router.delete("/deleteProfile/:id", jwtHelper.verifyJwtToken, userController.del
 router.get("/viewothersProfile/:id", userController.viewOtherAcc)
 
 //follow a user
-router.put("/follow", jwtHelper.verifyJwtToken, userController.addFollowers)
+router.put("/addFollowRequest", jwtHelper.verifyJwtToken, userController.addFollowRequest)
+
+//accept follow request
+router.put("/acceptFollowRequest", jwtHelper.verifyJwtToken, userController.acceptRequest)
 
 //unfollow a user
+router.put("/rejectRequest", jwtHelper.verifyJwtToken, userController.rejectRequest)
+
+router.put("/blockUser", jwtHelper.verifyJwtToken, userController.blockUser)
+
+router.put("/unBlockUser", jwtHelper.verifyJwtToken, userController.unBlockUser)
+
 router.put("/unfollow", jwtHelper.verifyJwtToken, userController.removeFollowers)
 
+router.put("/unfollow", jwtHelper.verifyJwtToken, userController.removeFollowers)
+
+router.put("/unfollow", jwtHelper.verifyJwtToken, userController.removeFollowers)
 //friend suggestion will be implemented later ..still seaching a better method for it.
 
 module.exports = router;
