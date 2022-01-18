@@ -1,14 +1,14 @@
 const router = require('express').Router();
 const authController = require('../../src/controllers/auth.controllers')
+const authValidator = require('../validator/authValidator')
 
 
+router.post("/register", authValidator.validateRegisterUser, authController.register) 
 
-router.post("/register", authController.register)  //business logic implemented in auth controller
+router.post("/login", authValidator.validateLoginUser, authController.login)
 
-router.post("/login", authController.login)
+router.get("/verify-email", authController.verifyEmail)
 
-router.get("/verify-email",authController.verifyEmail)
-
-router.put("/reset-password",authController.resetPassword)
+router.post("/reset-password", authValidator.validateResetPassword, authController.resetPassword)
 
 module.exports = router;

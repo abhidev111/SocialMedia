@@ -4,6 +4,8 @@ const crypto = require('crypto')
 
 
 
+
+
 module.exports.register = async (req, res, next) => {
   try {
     const salt = await bcrypt.genSalt(10);
@@ -16,9 +18,6 @@ module.exports.register = async (req, res, next) => {
       password: hashedPassword,
       emailToken: crypto.randomBytes(64).toString('hex')
     })
-
-
-
     user.save((err, responseObj) => {
       if (err) {
         if (err.code == 11000) {

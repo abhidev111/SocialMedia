@@ -19,7 +19,7 @@ exports.validateUser = [
     .bail()
     .not()
     .isEmpty()
-    .withMessage('Invalid email address!')
+    .withMessage('Email address required!')
     .bail(),
   check('emailToken')
     .trim()

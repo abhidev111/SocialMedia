@@ -1,24 +1,23 @@
 const router = require('express').Router();
 const jwtHelper = require('../middlewares/jwtHelper');
 const postController = require('../controllers/post.controllers')
+const postValidator = require('../validator/postValidator')
 
 
 
-router.post("/createPost", jwtHelper.verifyJwtToken, postController.createPost);
-
-// router.put("/updatePost",jwtHelper.verifyJwtToken,postController.updatePost);
+router.post("/createPost", postValidator.validatePost, jwtHelper.verifyJwtToken, postController.createPost);
 
 router.delete("/deletePost/:postId", jwtHelper.verifyJwtToken, postController.deletePost);
 
-router.post("/likePost", jwtHelper.verifyJwtToken, postController.likePost);
+router.post("/likePost", postValidator.validatePostId, jwtHelper.verifyJwtToken, postController.likePost);
 
-router.post("/addComment", jwtHelper.verifyJwtToken, postController.addComment);
+router.post("/addComment", postValidator.validateComment, jwtHelper.verifyJwtToken, postController.addComment);
 
 router.put("/updateComment", jwtHelper.verifyJwtToken, postController.updateComment);
 
-router.get("/getPost", jwtHelper.verifyJwtToken, postController.getPost);
+router.get("/getPost", postValidator.validatePostReq, jwtHelper.verifyJwtToken, postController.getPost);
 
-router.get("/getAllPost", jwtHelper.verifyJwtToken, postController.getAllPost);
+router.get("/getAllPost", postValidator.validatePostReq, jwtHelper.verifyJwtToken, postController.getAllPost);
 
 
 module.exports = router;

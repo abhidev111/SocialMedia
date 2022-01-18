@@ -1,5 +1,7 @@
 const postModel = require('../models/post.model')
 const path = require('path')
+
+
 module.exports.createPost = async (req, res) => {
     console.log(req.body)
     console.log(req._id, req.body.userId)
@@ -24,9 +26,8 @@ module.exports.createPost = async (req, res) => {
 
 }
 
-module.exports.updatePost = async (req, res) => {
-
-}
+// module.exports.updatePost = async (req, res) => {
+// }
 
 module.exports.deletePost = async (req, res) => {
     console.log(req.body)
