@@ -1,4 +1,5 @@
 const postModel = require('../models/post.model')
+const userModel = require('../models/user.model')
 const path = require('path')
 
 
@@ -92,16 +93,25 @@ module.exports.updateComment = async (req, res) => {
 
     try {
         const post = await postModel.findById(req.body.postId);
-        const oldComment = await postModel.findById(req.body.oldCommentId);
-        const updateComment = req.body.updateComment
+        // const oldComment = await postModel.findById(req.body.oldCommentId);
+        const postOwner = await userModel.findById(post.userId)
+        if (!postOwner.blockList.includes(req._id)) {
 
-        if(oldComment){
-        await post.findByIdAndUpdate(oldComment,{ $set: { commentsArray: { commenter_id: req._id, comment: updateComment } } })
+            const updatedComment = req.body.updatedComment
+            const commentId = req.body.oldCommentId
 
-        res.status(200).json("Comment updated successfully successfully")
+            const post = await postModel.updateOne({ _id: req.body.postId, "commentsArray._id": commentId }, {
+                $set: {
+                    "commentsArray.$.comment": updatedComment
+                }
+            })
+
+            res.status(200).json(post)
         }
-        else 
-        res.status(403).json("comment not found")
+        else {
+            res.status(403).json("You have been blocked dude")
+        }
+
 
     } catch (error) {
         res.status(500).send(error)
@@ -110,9 +120,54 @@ module.exports.updateComment = async (req, res) => {
 }
 
 module.exports.getPost = async (req, res) => {
+    const { id } = req.body
+    try {
+        const post = await postModel.findById(
+            { _id: id },
+            {
+                _id: true,
+                userId: true,
+                caption: true,
+                commentsArray: true,
+                likes: true
+            })
+        const postOwner = await userModel.findById({ _id: post.userId })
+        if (!postOwner.blockList.includes(req._id)) {
+            res.status(200).json(post)
+        }
+        else {
+            res.status(403).json("You are not allowed to watch this post as you are in block list of post Owner")
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+
 
 }
 
 module.exports.getAllPost = async (req, res) => {
+    const { id } = req.body
+    try {
+        const post = await postModel.find(
+            { userId: id },
+            {
+                _id: true,
+                userId: true,
+                caption: true,
+                commentsArray: true,
+                likes: true
+            })
+        // const postOwner = await userModel.findById({_id: "post.userId" })
+        // if (!postOwner.blockList.includes(req._id)) {
+        res.status(200).json(post)
+        // }
+        // else {
+        //     res.status(403).json("You are not allowed to watch this post as you are in block list of post Owner")
+        // }
+
+    } catch (error) {
+        console.log(error)
+    }
 
 }
