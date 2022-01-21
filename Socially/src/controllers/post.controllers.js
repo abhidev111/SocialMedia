@@ -1,6 +1,6 @@
 const postModel = require('../models/post.model')
 const userModel = require('../models/user.model')
-const path = require('path')
+// const path = require('path')
 
 
 module.exports.createPost = async (req, res) => {
@@ -93,7 +93,6 @@ module.exports.updateComment = async (req, res) => {
 
     try {
         const post = await postModel.findById(req.body.postId);
-        // const oldComment = await postModel.findById(req.body.oldCommentId);
         const postOwner = await userModel.findById(post.userId)
         if (!postOwner.blockList.includes(req._id)) {
 
@@ -148,6 +147,7 @@ module.exports.getPost = async (req, res) => {
 
 module.exports.getAllPost = async (req, res) => {
     const { id } = req.body
+    const postOwnerId = req.body.ownerId
     try {
         const post = await postModel.find(
             { userId: id },
@@ -158,13 +158,13 @@ module.exports.getAllPost = async (req, res) => {
                 commentsArray: true,
                 likes: true
             })
-        // const postOwner = await userModel.findById({_id: "post.userId" })
-        // if (!postOwner.blockList.includes(req._id)) {
+        const postOwner = await userModel.findById({_id: postOwnerId })
+        if (!postOwner.blockList.includes(req._id)) {
         res.status(200).json(post)
-        // }
-        // else {
-        //     res.status(403).json("You are not allowed to watch this post as you are in block list of post Owner")
-        // }
+        }
+        else {
+            res.status(403).json("You are not allowed to watch this post as you are in block list of post Owner")
+        }
 
     } catch (error) {
         console.log(error)
