@@ -7,7 +7,10 @@ const storage = new Storage({
 const bucket = storage.bucket("gs://sociallyimagestorage.appspot.com");
 
 
-module.exports.photoUpload = async (req, res) => {
+module.exports.photoUpload = async (req, res,err) => {
+  // if(err){
+  //   res.status(422).json("nooo")
+  // }
   let file = req.file;
 
   if (file) {
