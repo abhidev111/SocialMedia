@@ -1,3 +1,4 @@
+const path = require('path')
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage({
   projectId: "sociallyimagestorage",
@@ -11,8 +12,20 @@ module.exports.photoUpload = async (req, res,err) => {
   // if(err){
   //   res.status(422).json("nooo")
   // }
+  
   let file = req.file;
-
+  // console.log("position 1")
+  // console.log(file)
+  const filetypes = /jpeg|jpg|png/;
+  if(file.size > 5*1024*1024){
+    res.status(403).json({"success":false,"message":"File is too large"});
+  }
+  else if(!filetypes.test(path.extname(file.originalname).toLowerCase()) && !filetypes.test(file.mimetype)){
+    res.status(403).json({"success":false,"message":"Only images allowed (jpeg/jpg/png)"});
+  }
+  else{
+  // console.log("position 1")
+  // console.log(file)
   if (file) {
     try {
       const result = await uploadImageToStorage(file);
@@ -35,13 +48,16 @@ module.exports.photoUpload = async (req, res,err) => {
     });
   }
 }
+}
 
 const uploadImageToStorage = (file) => {
   return new Promise((resolve, reject) => {
     if (!file) {
       reject('No image file');
     }
-    let newFileName = `photo_${Date.now()}`;
+  //   console.log("position 2")
+  // console.log(file)
+    let newFileName = "images/"+`photo_${Date.now()}`;
 
     let fileUpload = bucket.file(newFileName); //uploading
 
