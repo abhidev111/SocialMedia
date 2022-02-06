@@ -74,15 +74,17 @@ const uploadImageToStorage = (file) => {
 
     blobStream.on('finish', () => {
       // The public URL can be used to directly access the file via HTTP.
-      //   const url = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
+      // const url = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
       fileUpload.getSignedUrl({
         action: 'read',
         expires: '03-09-2491'
       }).then(signedUrls => {
+        
         const url = signedUrls[0];
         const result = new Object({
           url: url,
           filename: newFileName
+          
         })
         resolve(result);
       })

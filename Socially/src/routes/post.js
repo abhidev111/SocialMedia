@@ -19,5 +19,6 @@ router.get("/getPost", postValidator.validatePostReq, jwtHelper.verifyJwtToken, 
 
 router.get("/getAllPost", postValidator.validatePostReq, jwtHelper.verifyJwtToken, postController.getAllPost);
 
+router.get("/getFeeds",jwtHelper.verifyJwtToken, postController.getFeeds);
 
 module.exports = router;
