@@ -64,7 +64,7 @@ var userSchema = new mongoose.Schema({
     accountMode: {
         type: String,
         enum: ['PRIVATE', 'PUBLIC'],
-        default: 'PRIVATE'
+        default: 'PUBLIC'
     }
 
 }, { timestamps: true }
