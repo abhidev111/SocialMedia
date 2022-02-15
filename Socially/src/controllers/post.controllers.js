@@ -14,10 +14,17 @@ module.exports.createPost = async (req, res) => {
                 userId: req.body.userId,
                 caption: req.body.caption,
                 imgURL: req.body.imgURL,
-                imgPath : req.body.imgPath
+                imgPath: req.body.imgPath
             });
 
             const savedPost = await newPost.save();
+
+            const usrById = await  userModel.findById({
+                _id: req._id
+            })
+            usrById.posts.push(newPost);
+            await usrById.save();
+
             res.status(200).json(savedPost);
         } catch (error) {
             console.log(error)
@@ -28,8 +35,6 @@ module.exports.createPost = async (req, res) => {
 
 }
 
-// module.exports.updatePost = async (req, res) => {
-// }
 
 module.exports.deletePost = async (req, res) => {
     console.log(req.body)
@@ -55,7 +60,7 @@ module.exports.deletePost = async (req, res) => {
 module.exports.likePost = async (req, res) => {
 
     try {
-        const post = await postModel.findById(req.body.id);
+        const post = await postModel.findById(req.body.postId);
 
         if (!post.likes.includes(req._id)) {
             await post.updateOne({ $push: { likes: req._id } })
@@ -120,6 +125,13 @@ module.exports.updateComment = async (req, res) => {
 }
 
 module.exports.getPost = async (req, res) => {
+    
+    //preferred one 
+
+    // const { id } = req.body;
+    //     const user = await userModel.findById(id).populate('posts');
+    //     res.send(user.posts);
+
     const { id } = req.body
     try {
         const post = await postModel.findById(
@@ -133,7 +145,10 @@ module.exports.getPost = async (req, res) => {
             })
         const postOwner = await userModel.findById({ _id: post.userId })
         if (!postOwner.blockList.includes(req._id)) {
+            if(postOwner.accountMode == 'PRIVATE' && postOwner.followers.includes(req._id))
             res.status(200).json(post)
+            else
+                res.status(403).json("Its a Private account and you are not following them");
         }
         else {
             res.status(403).json("You are not allowed to watch this post as you are in block list of post Owner")
@@ -148,36 +163,40 @@ module.exports.getPost = async (req, res) => {
 
 module.exports.getAllPost = async (req, res) => {
     const { id } = req.body
-    let { page,size } = req.params;
-    if(!page){
+    let { page, size } = req.params;
+    if (!page) {
         page = 1;
     }
-    if(!size){
+    if (!size) {
         size = 3;
     }
     const limit = parseInt(size);
-    const skip = (page-1)*size;
+    const skip = (page - 1) * size;
     // const postOwnerId = req.body.ownerId
     try {
         const post = await postModel
-        .find(
-            { userId: id },
-            {
-                _id: true,
-                userId: true,
-                imgURL:true,
-                caption: true,
-                commentsArray: true,
-                likes: true,
-                createdAt :true,
-                updatedAt :true
-            })
+            .find(
+                { userId: id },
+                {
+                    _id: true,
+                    userId: true,
+                    imgURL: true,
+                    caption: true,
+                    commentsArray: true,
+                    likes: true,
+                    createdAt: true,
+                    updatedAt: true
+                })
             .limit(limit)
             .skip(skip)
             .sort('-createdAt');
-        const postOwner = await userModel.findById({_id: id })
+        const postOwner = await userModel.findById({ _id: id })
+            
         if (!postOwner.blockList.includes(req._id)) {
-        res.status(200).json({Count:post.length,result:post})
+            if(postOwner.accountMode == 'PRIVATE' && postOwner.followers.includes(req._id))
+            res.status(200).json({ Count: post.length, result: post })
+            else
+                res.status(403).json("Its a Private account and you are not following them");
         }
         else {
             res.status(403).json("You are not allowed to watch this post as you are in block list of post Owner")
@@ -189,27 +208,31 @@ module.exports.getAllPost = async (req, res) => {
 
 }
 
-module.exports.getFeeds = async (req,res)=>{
-    
-    let { page,size } = req.params;
-    if(!page){
+module.exports.getFeeds = async (req, res) => {
+
+    let { page, size } = req.params;
+    if (!page) {
         page = 1;
     }
-    if(!size){
+    if (!size) {
         size = 3;
     }
     const limit = parseInt(size);
-    const skip = (page-1)*size;
-    const viewer = await userModel.find({_id:req._id})
+    const skip = (page - 1) * size;
+    const viewer = await userModel.find({ _id: req._id })
     console.log(viewer[0].following)
     const followingArr = viewer[0].following
-    const likes = viewer[0].likes
-    const feeds = await postModel.find(
-            { userId: { $in :followingArr }})
-            .limit(limit)
-            .skip(skip)
-            .sort('-createdAt');
-    console.log(feeds)
+    // const likes = viewer[0].likes
+    // console.log(likes)
+    const feeds = await postModel.find({
+        // $and: [
+        userId: { $in: followingArr }
+        // ,
+        // { userId: { $nin: feeds.likes } }
+        // ]
+    }).limit(limit)
+        .skip(skip)
+        .sort('-createdAt');
     res.send(feeds)
     //res.send(viewer[0].following)
 }

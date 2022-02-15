@@ -12,13 +12,13 @@ var userSchema = new mongoose.Schema({
         min: 4,
         max: 20,
         unique: true,
-        trim : true
+        trim: true
     },
 
     email: {
         type: String,
-        lowercase :true,
-        trim : true
+        lowercase: true,
+        trim: true
     },
     emailToken: {
         type: String
@@ -57,6 +57,14 @@ var userSchema = new mongoose.Schema({
         type: String,
         default: "hey there I am on Socially",
         max: 60
+    },
+    posts: [
+        { type: mongoose.Schema.Types.ObjectId, ref: 'Post' }
+    ],
+    accountMode: {
+        type: String,
+        enum: ['PRIVATE', 'PUBLIC'],
+        default: 'PRIVATE'
     }
 
 }, { timestamps: true }
@@ -71,7 +79,7 @@ userSchema.methods.generateJwt = function () {
     return jwt.sign({ _id: this._id },
         process.env.SECRET_KEY
         // ,{ expiresIn: '60m' }
-        );          // jwt token expires in 20 min
+    );          // jwt token expires in 20 min
 }
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 // const bcrypt = require('bcrypt');
 const _ = require('lodash');
+const userModel = require('../models/user.model');
 
 
 
@@ -63,7 +64,10 @@ module.exports.viewOtherAcc = async (req, res) => {
                     return res.status(404).json({ status: false, message: "User record not found" });
 
                 else
+                    if(user.accountMode == 'PRIVATE' && user.followers.includes(req._id))
                     return res.status(200).json({ status: true, user: _.pick(user, ["userName", "fullName", "profilePicture", "description", "followers.length", "following.length"]) });
+                    else
+                res.status(403).json("Its a Private account and you are not following them");
             }
         )
     } catch (error) {
@@ -211,5 +215,19 @@ module.exports.unBlockUser = async (req, res) => {
     }
     else {
         res.status(403).send("u can't block/unblock urself :(")
+    }
+}
+
+module.exports.ChangeAccMode = async (req, res) => {
+    try {
+        const user = userModel.find(req._id)
+        if(user.accountMode == 'PRIVATE')
+           user.accountMode = 'PUBLIC'
+        else 
+            user.accountMode = 'PRIVATE'
+        await user.save()
+        res.status(200).json("acc mode changed to", user.accountMode)            
+    } catch (error) {
+        console.log(errpr);
     }
 }

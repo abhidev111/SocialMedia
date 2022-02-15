@@ -29,7 +29,6 @@ var postSchema = new mongoose.Schema({
         }
     ]
 
-
 }, { timestamps: true }
 )
 
